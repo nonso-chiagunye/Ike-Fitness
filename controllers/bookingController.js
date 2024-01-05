@@ -17,9 +17,10 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     mode: 'payment',
 
     // success_url: `${req.protocol}://${req.get('host')}/my-plans`,
-    success_url: `${req.protocol}://${req.get('host')}/my-plans/?plan=${
-      req.params.planId
-    }&user=${req.user.id}&price=${plan.price}`,
+    // success_url: `${req.protocol}://${req.get('host')}/my-plans/?plan=${
+    //   req.params.planId
+    // }&user=${req.user.id}&price=${plan.price}`,
+    success_url: `${req.protocol}://${req.get('host')}/my-plans`,
     // cancel_url: `${req.protocol}://${req.get('host')}/plan/${plan.slug}`,
     cancel_url: `${req.protocol}://${req.get('host')}/plan/${plan.slug}`,
     customer_email: req.user.email,
@@ -33,12 +34,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
           product_data: {
             name: `${plan.name} Plan`,
             description: plan.description,
-            // images: [
-            //   `${req.protocol}://${req.get('host')}/img/plans/${
-            //     plan.imageCover
-            //   }`,
-            // ],
-            images: [`https://www.natours.dev/img/tours/tour-1-cover.jpg`],
+            images: [
+              `${req.protocol}://${req.get('host')}/img/plans/${
+                plan.imageCover
+              }`,
+            ],
           },
         },
       },
@@ -52,15 +52,44 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.createBookingCheckout = catchAsync(async (req, res, next) => {
-  // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-  const { plan, user, price } = req.query;
+// exports.createBookingCheckout = catchAsync(async (req, res, next) => {
+//   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
+//   const { plan, user, price } = req.query;
 
-  if (!plan && !user && !price) return next();
+//   if (!plan && !user && !price) return next();
+//   await Booking.create({ plan, user, price });
+
+//   res.redirect(req.originalUrl.split('?')[0]);
+// });
+
+const createBookingCheckout = async (session) => {
+  const plan = session.client_reference_id;
+  const user = (await User.findOne({ email: session.customer_email }))._id;
+  // const price = session.line_items[0].price_data.unit_amount / 100;
+  const price = session.amount_total / 100;
   await Booking.create({ plan, user, price });
+};
 
-  res.redirect(req.originalUrl.split('?')[0]);
-});
+exports.webhookCheckout = (req, res, next) => {
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const signature = req.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET,
+    );
+  } catch (err) {
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed')
+    createBookingCheckout(event.data.object);
+
+  res.status(200).json({ received: true });
+};
 
 // The Function that will create the new booking in the Database
 // exports.createBookingCheckout = catchAsync(async (req, res, next) => {
