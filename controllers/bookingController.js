@@ -11,11 +11,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
   const plan = await Plan.findById(req.params.planId);
   // 2) Create checkout session
-
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     mode: 'payment',
-
     // success_url: `${req.protocol}://${req.get('host')}/my-plans`,
     // success_url: `${req.protocol}://${req.get('host')}/my-plans/?plan=${
     //   req.params.planId
