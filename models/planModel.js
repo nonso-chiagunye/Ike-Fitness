@@ -112,18 +112,7 @@ planSchema.pre('save', function (next) {
   next();
 });
 
-// tourSchema.pre('save', function(next) {
-//   console.log('Will save document...');
-//   next();
-// });
-
-// tourSchema.post('save', function(doc, next) {
-//   console.log(doc);
-//   next();
-// });
-
 // QUERY MIDDLEWARE
-// tourSchema.pre('find', function(next) {
 planSchema.pre(/^find/, function (next) {
   this.find({ executivePlan: { $ne: true } });
 
@@ -140,16 +129,14 @@ planSchema.pre(/^find/, function (next) {
   next();
 });
 
-planSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} milliseconds!`);
-  next();
-});
+// planSchema.post(/^find/, function (docs, next) {
+//   console.log(`Query took ${Date.now() - this.start} milliseconds!`);
+//   next();
+// });
 
 // AGGREGATION MIDDLEWARE
 planSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { executivePlan: { $ne: true } } });
-
-  console.log(this.pipeline());
   next();
 });
 

@@ -64,7 +64,7 @@ reviewSchema.statics.calcAverageRatings = async function (planId) {
       },
     },
   ]);
-  // console.log(stats);
+ 
 
   if (stats.length > 0) {
     await Plan.findByIdAndUpdate(planId, {
@@ -88,7 +88,6 @@ reviewSchema.post('save', function () {
 // findByIdAndDelete
 reviewSchema.pre(/^findOneAnd/, async function (next) {
   this.rev = await this.findOne();
-  // console.log(this.r);
   next();
 });
 

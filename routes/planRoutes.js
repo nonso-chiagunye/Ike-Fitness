@@ -5,7 +5,6 @@ const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
-// console.log(router);
 router.use('/:planId/reviews', reviewRouter);
 
 router
