@@ -1,0 +1,210 @@
+[
+  {
+    "name": "General Fitness",
+    "goal": "Improve overall health and fitness",
+    "_id": "65836dc3893e6b4532ab3177",
+    "description": "A balanced routine that includes a mix of cardio activities (running, cycling) and full-body strength training (bodyweight exercises, resistance training)",
+    "components": [
+      "Cardiovascular exercises",
+      "Strength training",
+      "Flexibility and mobility exercises"
+    ],
+
+    "startDates": [
+      "2024-01-06T09:00:00.000Z",
+      "2024-04-06T09:00:00.000Z",
+      "2024-07-06T09:00:00.000Z",
+      "2024-10-05T09:00:00.000Z"
+    ],
+    "duration": 90,
+    "trainers": ["6585573e6ea238848d3c08b9", "6585573e6ea238848d3c08ba"],
+    "images": ["plan-1-1.jpg", "plan-1-2.jpg", "plan-1-3.jpg"],
+    "imageCover": "plan-1-cover.jpg",
+    "price": 497,
+    "difficulty": "medium"
+  },
+  {
+    "name": "Weight Loss",
+    "goal": "Burn calories and promote fat loss",
+    "_id": "65836dc3893e6b4532ab3178",
+    "description": "Interval training, circuit workouts, and a calorie-controlled diet",
+    "components": [
+      "High-intensity cardio workouts",
+      "Strength training",
+      "Calorie expenditure"
+    ],
+
+    "startDates": ["2024-01-06T09:00:00.000Z", "2024-07-06T09:00:00.000Z"],
+    "duration": 180,
+    "trainers": ["6585573e6ea238848d3c08bb", "6585573e6ea238848d3c08bc"],
+    "images": ["plan-2-1.jpg", "plan-2-2.jpg", "plan-2-3.jpg"],
+    "imageCover": "plan-2-cover.jpg",
+    "price": 950,
+    "difficulty": "difficult"
+  },
+  {
+    "name": "Muscle Building",
+    "goal": "Increase muscle mass and strength",
+    "_id": "65836dc3893e6b4532ab3179",
+    "description": "Split training routines (e.g., focusing on specific muscle groups on different days), compound lifts (deadlifts, squats), and progressive overload",
+    "components": [
+      "Heavy resistance training",
+      " Hypertrophy-focused workouts",
+      "Targeted muscle group training"
+    ],
+
+    "startDates": ["2024-01-06T09:00:00.000Z", "2024-07-06T09:00:00.000Z"],
+    "duration": 180,
+    "trainers": ["6585573e6ea238848d3c08bd", "6585573e6ea238848d3c08be"],
+    "images": ["plan-3-1.jpg", "plan-3-2.jpg", "plan-3-3.jpg"],
+    "imageCover": "plan-3-cover.jpg",
+    "price": 620,
+    "difficulty": "difficult"
+  },
+  {
+    "name": "High-Intensity Interval Training",
+    "goal": "Improve cardiovascular fitness and burn calories",
+    "_id": "65836dc3893e6b4532ab317a",
+    "description": "Sprint intervals, Tabata workouts, or circuit training",
+    "components": [
+      "Short bursts of intense exercise",
+      "Periods of rest",
+      "Periods of lower-intensity activity"
+    ],
+
+    "startDates": ["2021-06-19T09:00:00.000Z"],
+    "duration": 90,
+    "trainers": ["6585573e6ea238848d3c08bf", "6585573e6ea238848d3c08c0"],
+    "images": ["plan-4-1.jpg", "plan-4-2.jpg", "plan-4-3.jpg"],
+    "imageCover": "plan-4-cover.jpg",
+    "price": 350,
+    "difficulty": "difficult"
+  },
+  {
+    "name": "Functional Fitness",
+    "goal": "Improve overall functionality and movement patterns",
+    "_id": "65836dc3893e6b4532ab317b",
+    "description": "Bodyweight exercises, functional movements (squats, lunges), and core strengthening exercises",
+    "components": [
+      "Exercises that mimic everyday movements",
+      "Balance and stability training"
+    ],
+
+    "startDates": [
+      "2024-01-06T09:00:00.000Z",
+      "2024-04-06T09:00:00.000Z",
+      "2024-07-06T09:00:00.000Z",
+      "2024-10-05T09:00:00.000Z"
+    ],
+    "duration": 90,
+    "trainers": ["6585587e0740708ac9449e17", "6585587e0740708ac9449e1a"],
+    "images": ["plan-5-1.jpg", "plan-5-2.jpg", "plan-5-3.jpg"],
+    "imageCover": "plan-5-cover.jpg",
+    "price": 400,
+    "difficulty": "easy"
+  },
+  {
+    "name": "CrossFit Training",
+    "goal": "Develop a broad and inclusive fitness",
+    "_id": "65836dc3893e6b4532ab317c",
+    "description": "WODs (Workouts of the Day) incorporating functional movements like box jumps, kettlebell swings, and Olympic lifts",
+    "components": [
+      "High-intensity workouts",
+      "Elements of cardiovascular conditioning",
+      "Strength training",
+      "Gymnastics"
+    ],
+
+    "startDates": [
+      "2024-01-06T09:00:00.000Z",
+      "2024-04-06T09:00:00.000Z",
+      "2024-07-06T09:00:00.000Z",
+      "2024-10-05T09:00:00.000Z"
+    ],
+    "duration": 90,
+    "trainers": ["6585587e0740708ac9449e1b", "6585587e0740708ac9449e1c"],
+    "images": ["plan-6-1.jpg", "plan-6-2.jpg", "plan-6-3.jpg"],
+    "imageCover": "plan-6-cover.jpg",
+    "price": 380,
+    "difficulty": "medium"
+  },
+  {
+    "name": "Cardiovascular Conditioning",
+    "goal": "Improve cardiovascular endurance",
+    "_id": "65836dc3893e6b4532ab317d",
+    "description": "Running programs, cycling, swimming, or group fitness classes like spinning",
+    "components": ["Sustained aerobic exercises", "Interval training"],
+
+    "startDates": ["2024-01-06T09:00:00.000Z", "2024-07-06T09:00:00.000Z"],
+    "duration": 180,
+    "trainers": ["6585587e0740708ac9449e1d", "6585587e0740708ac9449e1e"],
+    "images": ["plan-7-1.jpg", "plan-7-2.jpg", "plan-7-3.jpg"],
+    "imageCover": "plan-7-cover.jpg",
+    "price": 600,
+    "difficulty": "difficult"
+  },
+  {
+    "name": "Yoga and Flexibility",
+    "goal": "Enhance flexibility, balance, and mental well-being",
+    "_id": "65836dc3893e6b4532ab317e",
+    "description": "Vinyasa yoga, Hatha yoga, or a combination of yoga and Pilates",
+    "components": [
+      "Yoga poses",
+      "Stretching exercises",
+      "Mindfulness practices"
+    ],
+
+    "startDates": ["2024-01-06T09:00:00.000Z", "2024-07-06T09:00:00.000Z"],
+    "duration": 180,
+    "trainers": ["6585587e0740708ac9449e18", "6585587e0740708ac9449e19"],
+    "images": ["plan-8-1.jpg", "plan-8-2.jpg", "plan-8-3.jpg"],
+    "imageCover": "plan-8-cover.jpg",
+    "price": 1200,
+    "difficulty": "medium"
+  },
+  {
+    "name": "Sport-Specific Training",
+    "goal": "Enhance performance in a specific sport or activity",
+    "_id": "65836dc3893e6b4532ab317f",
+    "description": "Agility drills, sport-specific strength training, and conditioning tailored to the requirements of the chosen sport",
+    "components": [
+      "Targeted exercises that mimic the movements and demands of the sport"
+    ],
+
+    "startDates": [
+      "2024-01-06T09:00:00.000Z",
+      "2024-04-06T09:00:00.000Z",
+      "2024-07-06T09:00:00.000Z",
+      "2024-10-05T09:00:00.000Z"
+    ],
+    "duration": 90,
+    "trainers": ["6585587e0740708ac9449e1f", "6585587e0740708ac9449e20"],
+    "images": ["plan-9-1.jpg", "plan-9-2.jpg", "plan-9-3.jpg"],
+    "imageCover": "plan-9-cover.jpg",
+    "price": 340,
+    "difficulty": "medium"
+  },
+  {
+    "name": "Beginner Fitness",
+    "goal": "Introduce newcomers to exercise and establish a foundation",
+    "_id": "65836dc3893e6b4532ab3180",
+    "description": "Walking or light jogging, bodyweight exercises, and basic strength training movements",
+    "components": [
+      "Simple and manageable exercises",
+      "Gradually increasing intensity"
+    ],
+
+    "startDates": [
+      "2024-01-06T09:00:00.000Z",
+      "2024-04-06T09:00:00.000Z",
+      "2024-07-06T09:00:00.000Z",
+      "2024-10-05T09:00:00.000Z"
+    ],
+    "duration": 90,
+    "trainers": ["65855a966c7f3bdb30d16892", "65855a966c7f3bdb30d16893"],
+    "images": ["plan-10-1.jpg", "plan-10-2.jpg", "plan-10-3.jpg"],
+    "imageCover": "plan-10-cover.jpg",
+    "price": 370,
+    "difficulty": "easy"
+  }
+]
