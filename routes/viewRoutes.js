@@ -8,6 +8,8 @@ router.use(viewsController.alerts);
 
 router.get('/', authController.isLoggedIn, viewsController.getOverview);
 
+router.get('/signup', authController.isLoggedIn, viewsController.getSignupForm);
+
 router.get('/plan/:slug', authController.isLoggedIn, viewsController.getPlan);
 
 router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
