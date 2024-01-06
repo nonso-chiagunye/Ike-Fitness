@@ -18,7 +18,7 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     // success_url: `${req.protocol}://${req.get('host')}/my-plans/?plan=${
     //   req.params.planId
     // }&user=${req.user.id}&price=${plan.price}`,
-    success_url: `${req.protocol}://${req.get('host')}/my-plans`,
+    success_url: `${req.protocol}://${req.get('host')}/my-plans?alert=booking`,
     // cancel_url: `${req.protocol}://${req.get('host')}/plan/${plan.slug}`,
     cancel_url: `${req.protocol}://${req.get('host')}/plan/${plan.slug}`,
     customer_email: req.user.email,

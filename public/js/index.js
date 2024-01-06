@@ -1,9 +1,9 @@
 /* eslint-disable */
 import '@babel/polyfill';
-// import { displayMap } from './mapbox';
 import { login, logout } from './login';
 import { updateSettings } from './updateSettings';
 import { bookPlan } from './stripe';
+import { showAlert } from './alerts';
 
 // DOM ELEMENTS
 const loginForm = document.querySelector('.form--login');
@@ -58,3 +58,6 @@ if (bookBtn)
     const { planId } = e.target.dataset;
     bookPlan(planId);
   });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 20);
