@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please provide your email'],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
+    validate: [validator.isEmail, 'Please provide a valid email'], // Validate user input is a valid email
   },
   photo: {
     type: String,
@@ -21,14 +21,14 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user', 'trainer', 'training-coordinator', 'admin'],
+    enum: ['user', 'trainer', 'training-coordinator', 'admin'], // Whitelist user roles
     default: 'user',
   },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minlength: 8,
-    select: false,
+    select: false, // Do not select in output
   },
   passwordConfirm: {
     type: String,
@@ -36,6 +36,7 @@ const userSchema = new mongoose.Schema({
     validate: {
       // This only works on CREATE and SAVE!!!
       validator: function (el) {
+        // passwordConfirm must match password
         return el === this.password;
       },
       message: 'Passwords are not the same!',
@@ -51,6 +52,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// DOCUMENT MIDDLEWARE: runs before .save()
 userSchema.pre('save', async function (next) {
   // Only run this function if password was actually modified
   if (!this.isModified('password')) return next();
@@ -70,12 +72,14 @@ userSchema.pre('save', function (next) {
   next();
 });
 
+// QUERY MIDDLEWARE: runs before .find()
 userSchema.pre(/^find/, function (next) {
   // this points to the current query
   this.find({ active: { $ne: false } });
   next();
 });
 
+// Schema method to compare input password
 userSchema.methods.correctPassword = async function (
   candidatePassword,
   userPassword,
@@ -83,6 +87,7 @@ userSchema.methods.correctPassword = async function (
   return await bcrypt.compare(candidatePassword, userPassword);
 };
 
+// Schema method to check if user password changed after a submitted jwt was issued to him
 userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   if (this.passwordChangedAt) {
     const changedTimestamp = parseInt(
@@ -97,6 +102,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
   return false;
 };
 
+// User schema to create password reset token
 userSchema.methods.createPasswordResetToken = function () {
   const resetToken = crypto.randomBytes(32).toString('hex');
 

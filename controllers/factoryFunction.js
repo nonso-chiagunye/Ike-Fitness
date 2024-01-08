@@ -2,6 +2,7 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const APIQueries = require('../utils/apiQueries');
 
+// Delete a db document
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndDelete(req.params.id);
@@ -16,6 +17,7 @@ exports.deleteOne = (Model) =>
     });
   });
 
+// Update a document
 exports.updateOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
@@ -35,6 +37,7 @@ exports.updateOne = (Model) =>
     });
   });
 
+// Create a document
 exports.createOne = (Model) =>
   catchAsync(async (req, res, next) => {
     const doc = await Model.create(req.body);
@@ -47,7 +50,11 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getOne = (Model, popOptions) =>
+// Get a specific document with their id
+exports.getOne = (
+  Model,
+  popOptions, // popOptions are for documents that need to populate data referenced from another collection, as defined in their schema.
+) =>
   catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
     if (popOptions) query = query.populate(popOptions);
@@ -65,6 +72,7 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
+// Get all documents in a collection
 exports.getAll = (Model) =>
   catchAsync(async (req, res, next) => {
     // To allow for nested GET reviews on plan (hack)
@@ -76,7 +84,6 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .paginate();
-    // const doc = await features.query.explain();
     const doc = await features.query;
 
     // SEND RESPONSE

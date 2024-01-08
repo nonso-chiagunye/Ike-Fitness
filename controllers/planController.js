@@ -6,8 +6,10 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const factory = require('./factoryFunction');
 
+// Multer used to handle file uploads (multipart/form-data). First store the file in memory
 const multerStorage = multer.memoryStorage();
 
+// Only accept image file type.
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
@@ -15,37 +17,36 @@ const multerFilter = (req, file, cb) => {
     cb(new AppError('Not an image! Please upload only images.', 400), false);
   }
 };
-
+// multer specific upload function
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
 
+// Upload image to plan
 exports.uploadPlanImages = upload.fields([
   { name: 'imageCover', maxCount: 1 },
   { name: 'images', maxCount: 3 },
 ]);
 
-// upload.single('image') req.file
-// upload.array('images', 5) req.files
-
+// Resizing uploaded image with sharp
 exports.resizePlanImages = catchAsync(async (req, res, next) => {
   if (!req.files.imageCover || !req.files.images) return next();
 
   // 1) Cover image
-  req.body.imageCover = `plan-${req.params.id}-${Date.now()}-cover.jpeg`;
+  req.body.imageCover = `plan-${req.params.id}-${Date.now()}-cover.jpeg`; // Give image a unique name/label
   await sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/plans/${req.body.imageCover}`);
+    .toFile(`public/img/plans/${req.body.imageCover}`); // Save image in img/plans directory
 
-  // 2) Images
+  // 2) Plan Images
   req.body.images = [];
 
   await Promise.all(
     req.files.images.map(async (file, i) => {
-      const filename = `plan-${req.params.id}-${Date.now()}-${i + 1}.jpeg`;
+      const filename = `plan-${req.params.id}-${Date.now()}-${i + 1}.jpeg`; // Give images unique names/labels
 
       await sharp(file.buffer)
         .resize(2000, 1333)
@@ -60,6 +61,7 @@ exports.resizePlanImages = catchAsync(async (req, res, next) => {
   next();
 });
 
+// Get top 5 performing plans (Highest rated and cheapest price)
 exports.topPerformingPlans = (req, res, next) => {
   req.query.limit = '5';
   req.query.sort = '-ratingsAverage,price';
@@ -73,6 +75,7 @@ exports.createPlan = factory.createOne(Plan);
 exports.updatePlan = factory.updateOne(Plan);
 exports.deletePlan = factory.deleteOne(Plan);
 
+// Get a statistics of best performing plans (gte 4.5 rating), grouped by their difficulty
 exports.getPlanStats = catchAsync(async (req, res, next) => {
   const stats = await Plan.aggregate([
     {
@@ -102,6 +105,7 @@ exports.getPlanStats = catchAsync(async (req, res, next) => {
   });
 });
 
+// Get plans starting at specific months of the year
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   const year = req.params.year * 1; // 2021
 

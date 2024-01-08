@@ -10,9 +10,9 @@ export const bookPlan = async (planId) => {
 
   try {
     // 1) Get checkout session from API
-    const session = await axios(`/api/v1/bookings/checkout-session/${planId}`);
+    const session = await axios(`/api/v1/bookings/checkout-session/${planId}`); // Make axios call to the checkout-session api
 
-    // 2) Create checkout form + chanre credit card
+    // 2) Create checkout form
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
     });

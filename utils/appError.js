@@ -1,3 +1,4 @@
+// Custom error/exception handler
 class AppError extends Error {
   // This custom error handler has access to built-in Error class.
   constructor(message, statusCode) {

@@ -5,7 +5,7 @@ const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
-router.use('/:planId/reviews', reviewRouter);
+router.use('/:planId/reviews', reviewRouter); // Use this middleware route to enable review router to have access to planId
 
 router
   .route('/top-five-plans')

@@ -1,3 +1,4 @@
+// Use this class to enable different features on the API, like filter, sort, limit fields and manage pages.
 class APIQueries {
   constructor(query, queryString) {
     this.query = query;

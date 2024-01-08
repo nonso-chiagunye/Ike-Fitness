@@ -5,8 +5,10 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const factory = require('./factoryFunction');
 
+// Multer used to handle file uploads (multipart/form-data). First store the file in memory
 const multerStorage = multer.memoryStorage();
 
+// Only accept image file type.
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {
     cb(null, true);
@@ -15,27 +17,31 @@ const multerFilter = (req, file, cb) => {
   }
 };
 
+// multer specific upload function
 const upload = multer({
   storage: multerStorage,
   fileFilter: multerFilter,
 });
 
+// Only single image file is allowed
 exports.uploadUserPhoto = upload.single('photo');
 
+// Resizing uploaded image with sharp
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`; // Give image a unique name/label
 
   await sharp(req.file.buffer)
     .resize(500, 500)
     .toFormat('jpeg')
     .jpeg({ quality: 90 })
-    .toFile(`public/img/users/${req.file.filename}`);
+    .toFile(`public/img/users/${req.file.filename}`); // Save image in img/users directory
 
   next();
 });
 
+// Use to whitelist documents fields that can be updated/modified by user.
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -44,11 +50,13 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
+// Get my data
 exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
   next();
 };
 
+// Update my data
 exports.updateMe = catchAsync(async (req, res, next) => {
   // 1) Create error if user POSTs password data
   if (req.body.password || req.body.passwordConfirm) {
@@ -78,6 +86,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   });
 });
 
+// Deactivate user when they request to be deleted
 exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
 

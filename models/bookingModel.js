@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
   plan: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.ObjectId, // A reference field for the Plan Model
     ref: 'Plan',
     required: [true, 'Booking must belong to a Plan!'],
   },
   user: {
-    type: mongoose.Schema.ObjectId,
+    type: mongoose.Schema.ObjectId, // A reference field for the User Model
     ref: 'User',
     required: [true, 'Booking must belong to a User!'],
   },
@@ -25,6 +25,7 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
+// Pre save hook to populate the user and plan fields
 bookingSchema.pre(/^find/, function (next) {
   this.populate('user').populate({
     path: 'plan',

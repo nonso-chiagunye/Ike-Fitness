@@ -10,12 +10,13 @@ export const updateSettings = async (data, type) => {
         ? '/api/v1/users/updateMyPassword'
         : '/api/v1/users/updateMe';
 
+    // If update type is password, make axios call to updateMyPassword api, else call updateMe api
     const res = await axios({
       method: 'PATCH',
       url,
       data,
     });
-
+    // Show alert if resolved or rejected
     if (res.data.status === 'success') {
       showAlert('success', `${type.toUpperCase()} updated successfully!`);
     }

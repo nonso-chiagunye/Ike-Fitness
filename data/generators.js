@@ -1,7 +1,8 @@
+// The below scripts are used to generate unique ObjectIds and encrypt passwords of users loaded directly to the db
 const bcrypt = require('bcryptjs');
 const { ObjectId } = require('mongodb');
 
-// GENERATE OBJECTID FOR 27 DOCUMENTS
+// GENERATE OBJECTID FOR 27 DB DOCUMENTS
 for (let i = 1; i <= 27; i++) {
   const myObjectId = new ObjectId();
 
@@ -21,4 +22,5 @@ bcrypt.hash(password, saltRounds, (err, hash) => {
   }
 });
 
+// Run the script
 // node generators.js

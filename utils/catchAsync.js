@@ -1,3 +1,4 @@
+// This global function handle rejected asynchronous requests
 module.exports = (fn) => {
   // fn is the function we are wrapping/enclosing within catchAsync function
   return (req, res, next) => {

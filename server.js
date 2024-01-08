@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+// Log event and exit in case of uncaught exception
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
   console.log(err.name, err.message);
@@ -9,15 +10,17 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app');
 
-dotenv.config({ path: './config.env' });
+dotenv.config({ path: './config.env' }); // path to secret file
 
 const DB = process.env.DATABASE.replace(
+  // Store password part of the db url in seperate variable and read it with js string method replace()
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD,
 );
 
 mongoose
   .connect(DB, {
+    // Connect to the db
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
@@ -31,6 +34,7 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
+// Promises that were rejected but have not yet been handled
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
   console.log(err.name, err.message);

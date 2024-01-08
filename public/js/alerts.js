@@ -1,4 +1,5 @@
 /* eslint-disable */
+// Controls showing and hiding alerts for different alert messages
 
 export const hideAlert = () => {
   const el = document.querySelector('.alert');

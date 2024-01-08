@@ -10,7 +10,6 @@ const planSchema = new mongoose.Schema(
       trim: true,
       maxlength: [60, 'A plan name must have less or equal than 60 characters'],
       minlength: [10, 'A plan name must have more or equal than 10 characters'],
-      // validate: [validator.isAlpha, 'Tour name must only contain characters']
     },
     goal: {
       type: String,
@@ -27,7 +26,7 @@ const planSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A plan must have a difficulty'],
       enum: {
-        values: ['easy', 'medium', 'difficult'],
+        values: ['easy', 'medium', 'difficult'], // Input validation: whitelist acceptable values
         message: 'Difficulty is either: easy, medium, difficult',
       },
     },
@@ -36,7 +35,7 @@ const planSchema = new mongoose.Schema(
       default: 4.5,
       min: [1, 'Rating must be above 1.0'],
       max: [5, 'Rating must be below 5.0'],
-      set: (val) => Math.round(val * 10) / 10, // 4.666666, 46.6666, 47, 4.7
+      set: (val) => Math.round(val * 10) / 10,
     },
     ratingsQuantity: {
       type: Number,
@@ -50,6 +49,7 @@ const planSchema = new mongoose.Schema(
       type: Number,
       validate: {
         validator: function (val) {
+          // Validate acceptable inpute values
           // this only points to current doc on NEW document creation
           return val < this.price;
         },
@@ -61,10 +61,6 @@ const planSchema = new mongoose.Schema(
       trim: true,
       required: [true, 'A plan must have a description'],
     },
-    // description: {
-    //   type: String,
-    //   trim: true,
-    // },
     imageCover: {
       type: String,
       required: [true, 'A plan must have a cover image'],
@@ -73,17 +69,17 @@ const planSchema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
-      select: false,
+      select: false, // Do not include in output
     },
     startDates: [Date],
     executivePlan: {
       type: Boolean,
       default: false,
-      select: false,
+      select: false, // Do not include in output
     },
     trainers: [
       {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.ObjectId, // A reference value for User Model
         ref: 'User',
       },
     ],
@@ -94,12 +90,15 @@ const planSchema = new mongoose.Schema(
   },
 );
 
+// Create index for plan and ratingsAverage fields
 planSchema.index({ price: 1, ratingsAverage: -1 });
 
+// Create a durationWeeks virtual property (part of collection, can be called in output, but not on the collection)
 planSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+// Virtual property for reviews. Appears as part of the plan output
 planSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'plan',
@@ -112,7 +111,7 @@ planSchema.pre('save', function (next) {
   next();
 });
 
-// QUERY MIDDLEWARE
+// QUERY MIDDLEWARE: runs before .find()
 planSchema.pre(/^find/, function (next) {
   this.find({ executivePlan: { $ne: true } });
 
@@ -123,18 +122,13 @@ planSchema.pre(/^find/, function (next) {
 planSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'trainers',
-    select: '-__v -passwordChangedAt',
+    select: '-__v -passwordChangedAt', // Remove passwordChangedAt in the trainers output
   });
 
   next();
 });
 
-// planSchema.post(/^find/, function (docs, next) {
-//   console.log(`Query took ${Date.now() - this.start} milliseconds!`);
-//   next();
-// });
-
-// AGGREGATION MIDDLEWARE
+// AGGREGATION MIDDLEWARE: run before .aggregate()
 planSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { executivePlan: { $ne: true } } });
   next();

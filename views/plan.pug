@@ -1,10 +1,6 @@
 extends base
 include _reviewCard
 
-//- block append head
-//-   script(src='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js')
-//-   link(href='https://api.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css' rel='stylesheet')
-
 mixin overviewBox(label, text, icon)
   .overview-box__detail
     svg.overview-box__icon
@@ -26,10 +22,6 @@ block content
           svg.heading-box__icon
             use(xlink:href='/img/icons.svg#icon-clock')
           span.heading-box__text= `${plan.duration} days`
-        //- .heading-box__detail
-        //-   svg.heading-box__icon
-        //-     use(xlink:href='/img/icons.svg#icon-map-pin')
-        //-   span.heading-box__text= tour.startLocation.description
 
   section.section-description
     .overview-box
@@ -40,7 +32,6 @@ block content
           - const date = plan.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
           +overviewBox('Next date', date, 'calendar')
           +overviewBox('Difficulty', plan.difficulty, 'trending-up')
-          //- +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
           +overviewBox('Rating', `${plan.ratingsAverage} / 5`, 'star')
 
         .overview-box__group
@@ -66,9 +57,6 @@ block content
     each img, i in plan.images
       .picture-box
         img.picture-box__img(src=`/img/plans/${img}`, alt=`General Fitness Plan ${i + 1}`, class=`picture-box__img--${i + 1}`)
-
-  //- section.section-map
-  //-   #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
   section.section-reviews
     .reviews

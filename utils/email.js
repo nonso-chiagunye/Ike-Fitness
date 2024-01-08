@@ -3,6 +3,7 @@ const pug = require('pug');
 const htmlToText = require('html-to-text');
 const Transport = require('nodemailer-brevo-transport');
 
+// Email class to send email to client at different events
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
@@ -12,22 +13,13 @@ module.exports = class Email {
   }
 
   newTransport() {
+    // In production, use Brevo as email transporter to send real email to client
     if (process.env.NODE_ENV === 'production') {
-      // return 1;
       return nodemailer.createTransport(
         new Transport({ apiKey: process.env.BREVO_PASSWORD }),
       );
-      // return nodemailer.createTransport({
-      //   // service: 'Brevo',
-      //   host: process.env.BREVO_HOST,
-      //   port: process.env.BREVO_PORT,
-      //   auth: {
-      //     user: process.env.BREVO_USERNAME,
-      //     pass: process.env.BREVO_PASSWORD,
-      //   },
-      // });
     }
-
+    // In development, use mailtrap as transporter to send test email
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
       port: process.env.EMAIL_PORT,
@@ -37,14 +29,12 @@ module.exports = class Email {
       },
       secure: false,
       logger: true,
-      // tls: {
-      //   rejectUnAuthorized: true,
-      // },
     });
   }
 
-  // Send the actual email.
+  // Send the email.
   async send(template, subject) {
+    // template can be welcome or password reset email pug template
     // 1) Render HTML based on a pug template
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
@@ -76,29 +66,3 @@ module.exports = class Email {
     );
   }
 };
-
-// const sendEmail = async (options) => {
-//   // 1) Create a transporter
-//   const transporter = nodemailer.createTransport({
-//     host: process.env.EMAIL_HOST,
-//     port: process.env.EMAIL_PORT,
-//     auth: {
-//       user: process.env.EMAIL_USERNAME,
-//       pass: process.env.EMAIL_PASSWORD,
-//     },
-//   });
-
-//   // 2) Define the email options
-//   const mailOptions = {
-//     from: 'Nonso Chiagunye <nonso@ikefitness.com>',
-//     to: options.email,
-//     subject: options.subject,
-//     text: options.message,
-//     // html:
-//   };
-
-//   // 3) Actually send the email
-//   await transporter.sendMail(mailOptions);
-// };
-
-// module.exports = sendEmail;

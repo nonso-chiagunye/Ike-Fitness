@@ -4,7 +4,7 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-router.use(authController.protect);
+router.use(authController.protect); // All routes from here is protected
 
 router.get('/checkout-session/:planId', bookingController.getCheckoutSession);
 

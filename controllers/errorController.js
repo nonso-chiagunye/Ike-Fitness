@@ -1,15 +1,19 @@
 const AppError = require('../utils/appError');
 
+// When you try to cast a value with the wrong data type
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
   return new AppError(message, 400);
 };
 
+// When you try to duplicate a value that is marked as 'unique' into a db collection
 const handleDuplicateFieldsDB = (err) => {
   const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
   const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);
 };
+
+// When supplied data fails input validations set in db schema, such as Required field, min/max length, enum whitelist, etc
 const handleValidationErrorDB = (err) => {
   const errors = Object.values(err.errors).map((el) => el.message);
 
@@ -17,12 +21,15 @@ const handleValidationErrorDB = (err) => {
   return new AppError(message, 400);
 };
 
+// Invalid token error
 const handleJWTError = () =>
   new AppError('Invalid token. Please log in again!', 401);
 
+// Occurs when token is expired
 const handleJWTExpiredError = () =>
   new AppError('Your token has expired! Please log in again.', 401);
 
+// Send these responses in Development mode. Here you need details for debugging.
 const sendErrorDev = (err, req, res) => {
   // A) API
   if (req.originalUrl.startsWith('/api')) {
@@ -30,7 +37,7 @@ const sendErrorDev = (err, req, res) => {
       status: err.status,
       error: err,
       message: err.message,
-      stack: err.stack,
+      stack: err.stack, // Include full stack trace for debugging purposes
     });
   }
 
@@ -42,6 +49,7 @@ const sendErrorDev = (err, req, res) => {
   });
 };
 
+// In production, send as little information as possible to the client
 const sendErrorProd = (err, req, res) => {
   // A) API
   if (req.originalUrl.startsWith('/api')) {
@@ -87,7 +95,6 @@ module.exports = (err, req, res, next) => {
   if (process.env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
-    // let error = { ...err };
     let error = Object.assign(err);
 
     if (error.name === 'CastError') error = handleCastErrorDB(error);

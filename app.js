@@ -26,28 +26,29 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
-app.use(cors());
+app.use(cors()); // Enable Cross Origin Resource Sharing, to allow other apps make api calls to the api
 
-app.options('*', cors());
-// app.use(express.static(`${__dirname}/public`));
+app.options('*', cors()); // Allow cors on all routes
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 app.use(helmet());
 
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan('dev')); // Use morgan in dev for detailed logging
 }
 
-// Limit requests from same API
+// Limit requests from same API. Stop brute-force attacks
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour!',
 });
 
-app.use('/api', limiter);
+app.use('/api', limiter); // Set the limiter on all /api routes
 
+// Route to be used used by stripe webhook to post checkout
 app.post(
   '/webhook-checkout',
   express.raw({ type: 'application/json' }),
@@ -65,6 +66,7 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
+// Protect against http parameter pollution
 app.use(
   hpp({
     whitelist: [
@@ -77,6 +79,7 @@ app.use(
   }),
 );
 
+// Middleware to compress response bodies for all requests
 app.use(compression());
 
 app.use((req, res, next) => {
@@ -90,6 +93,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/bookings', bookingRouter);
 
+// Any route that is not defined above, throw an error
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
