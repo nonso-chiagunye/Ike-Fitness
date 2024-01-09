@@ -21,7 +21,7 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
-// app.enable('trust proxy'); // Trust proxies used by deployment platform
+app.enable('trust proxy'); // Trust proxies used by deployment platform
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
