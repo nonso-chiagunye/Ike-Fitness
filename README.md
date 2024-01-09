@@ -30,7 +30,7 @@
 | [ExpressJS](https://expressjs.com/)                                 | JS Web Framework               |
 | [Stripe](https://stripe.com/)                                       | Payment processor              |
 | [Pug](https://pugjs.org/)                                           | Templating                     |
-| [Babel](https://babeljs.io/)                                        | Bundler                        |
+| [Parcel](https://parceljs.org/)                                     | Bundler                        |
 | [Bcryptjs](https://www.npmjs.com/package/bcryptjs/)                 | Encryption                     |
 | [JSONWebToken](https://www.npmjs.com/package/jsonwebtoken/)         | Token signing and verification |
 | [Slugify](https://www.npmjs.com/package/slugify/)                   | URL slug generator             |
